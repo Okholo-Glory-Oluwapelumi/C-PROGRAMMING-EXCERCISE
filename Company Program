@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+#define TOTAL_CEMENT 100000  // Total cement in kilograms (100 tons)
+#define MAX_WEIGHT_PERCENTAGE 0.6  // Maximum weight percentage a worker can carry
+#define TRIP_TIME 10  // Time taken for one trip in minutes
+#define REST_TIME 10  // Rest time after 6 trips in minutes
+#define TRIPS_BEFORE_REST 6  // Number of trips before a rest period
+
+// Function to calculate trips and time for a single worker
+void calculateTripsAndTime(float bodyWeight) {
+    // Calculate maximum weight a worker can carry
+    float maxCarryWeight = bodyWeight * MAX_WEIGHT_PERCENTAGE;
+
+    // Calculate number of trips required
+    int trips = (int)(TOTAL_CEMENT / maxCarryWeight);
+    if (TOTAL_CEMENT % (int)maxCarryWeight != 0) {
+        trips++;  // If there's a remainder, an additional trip is needed
+    }
+
+    // Calculate total time taken
+    int totalTime = trips * TRIP_TIME;  // Total trip time in minutes
+    int restPeriods = trips / TRIPS_BEFORE_REST;  // Number of rest periods
+    totalTime += restPeriods * REST_TIME;  // Add rest time
+
+    // Convert total time to hours and minutes
+    int hours = totalTime / 60;
+    int minutes = totalTime % 60;
+
+    // Output results
+    printf("For a worker with body weight %.2f kg:\n", bodyWeight);
+    printf("Number of trips required: %d\n", trips);
+    printf("Total time required: %d hours and %d minutes\n\n", hours, minutes);
+}
+
+int main() {
+    int numWorkers;
+    
+    // Input number of workers
+    printf("Enter the number of workers: ");
+    scanf("%d", &numWorkers);
+
+    // Array to hold body weights of workers
+    float bodyWeights[numWorkers];
+
+    // Input body weights of workers
+    for (int i = 0; i < numWorkers; i++) {
+        printf("Enter body weight of worker %d (in kg): ", i + 1);
+        scanf("%f", &bodyWeights[i]);
+    }
+
+    // Calculate trips and time for each worker
+    for (int i = 0; i < numWorkers; i++) {
+        calculateTripsAndTime(bodyWeights[i]);
+    }
+
+    return 0;
+}
